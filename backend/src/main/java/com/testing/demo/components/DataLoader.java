@@ -25,8 +25,6 @@ public class DataLoader implements ApplicationRunner {
         TestItem item2 = new TestItem("Item Two", "This is the second item");
         testItemRepository.save(item2);
 
-
-
     }
 
 }
