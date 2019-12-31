@@ -29,8 +29,10 @@ async componentDidMount() {
 
     return (
       <div>
-        <p>This is the Container</p>
-        <Component1 />
+        <h1>This is the Container</h1>
+        <Component1 
+          testItemData={this.state.testItems}
+        />
       </div>
     )
   }
