@@ -5,6 +5,7 @@ class Item extends Component {
   render() {
     return(
       <span>
+        <h4>This is Item {this.props.testItemData.id}</h4>
         <table>
           <tbody>
             <tr>
