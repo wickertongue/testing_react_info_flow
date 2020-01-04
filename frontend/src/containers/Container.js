@@ -39,8 +39,9 @@ class Container extends Component {
 
     fetch("http://localhost:8080/testItems/")
       .then(res => {
-        console.log(res)
-        console.log(res._embedded)
+        const data = res.json()
+        console.log("Data: ", data)
+        console.log("Data._embedded: ", data._embedded)
 
         // this.setState(prevState => ({
         //   testItems: res._embedded.testItems
