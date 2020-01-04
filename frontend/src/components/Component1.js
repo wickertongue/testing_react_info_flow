@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import Item from '../components/Item'
-import Form from '../components/Form'
 
 class Component1 extends Component {
 
@@ -14,7 +13,6 @@ class Component1 extends Component {
               key={item.id}
             />
           )}
-          <Form />
       </div>
     )
   }

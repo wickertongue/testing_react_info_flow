@@ -8,6 +8,32 @@ class Form extends Component {
       name: '',
       description: ''
     }
+
+    this.handleNameChange = this.handleNameChange.bind(this);
+
+    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
+
+    this.onSubmit = this.onSubmit.bind(this);
+
+  }
+
+  handleNameChange(event) {
+    this.setState({ name: event.target.value })
+  }
+
+  handleDescriptionChange(event) {
+    this.setState({ description: event.target.value })
+  }
+
+  onSubmit(event) {
+    event.preventDefault(event);
+    const name = this.state.name.trim();
+    const description = this.state.description.trim();
+    if (!name || !description ) {
+      return
+    }
+    this.props.handleSubmit({ name: name, description: description })
+    this.setState({ name: '', description: '' })
   }
 
   render() {
@@ -24,6 +50,7 @@ class Form extends Component {
                   <input
                     type="text"
                     placeholder="Name"
+                    onChange={this.handleNameChange}
                   />
                 </td>
               </tr>
@@ -33,6 +60,7 @@ class Form extends Component {
                   <input
                     type="text"
                     placeholder="Description"
+                    onChange={this.handleDescriptionChange}
                   />
                 </td>
               </tr>
