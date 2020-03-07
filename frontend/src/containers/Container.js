@@ -19,13 +19,17 @@ class Container extends Component {
   };
 
   async fetchItems() {
-    const testItemsFetch = await fetch("http://localhost:8080/testItems/")
-    const testItems = await testItemsFetch.json();
-    this.setState({
-      testItems: testItems._embedded.testItems,
-    });
-    this.setState({ isLoading: false })
-    console.log("Response from Fetch: ", testItems._embedded.testItems)
+    fetch("http://localhost:8080/testItems/")
+      .then(res => res.json())
+      .then(data => {
+        this.setState(
+          {
+            testItems: data._embedded.testItems,
+            isLoading: false
+          }
+        )
+        console.log("Results from Fetch: ", data._embedded.testItems)
+      })
   }
 
   async postItems(formData) {
