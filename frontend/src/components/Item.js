@@ -24,7 +24,7 @@ class Item extends Component {
         </table>
       </span>
   )}
-
+  
 }
 
 export default Item;

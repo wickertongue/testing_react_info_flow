@@ -8,22 +8,27 @@ class Container extends Component {
     super(props);
     this.state = {
       isLoading: true,
+      newItems: false,
       testItems: []
     }
     this.handleSubmit = this.handleSubmit.bind(this)
   };
 
   async componentDidMount() {
+    this.fetchItems("http://localhost:8080/testItems/")
+  };
+
+  async fetchItems() {
     const testItemsFetch = await fetch("http://localhost:8080/testItems/")
     const testItems = await testItemsFetch.json();
     this.setState({
       testItems: testItems._embedded.testItems,
     });
     this.setState({ isLoading: false })
-  };
+    console.log("Response from Fetch: ", testItems._embedded.testItems)
+  }
 
-  handleSubmit(formData) {
-
+  async postItems(formData) {
     fetch("http://localhost:8080/testItems", {
       method: 'POST',
       headers: {
@@ -34,42 +39,34 @@ class Container extends Component {
         description: formData.description
       })
     })
-      .then((res) => res.json())
-      .then(console.log("Post complete"))
-
-    fetch("http://localhost:8080/testItems/")
-      .then(res => {
-        const data = res.json()
-        console.log("Data: ", data)
-        console.log("Data._embedded: ", data._embedded)
-
-        // this.setState(prevState => ({
-        //   testItems: res._embedded.testItems
-        //   })
-        // )
-      })
-    this.setState({ isLoading: false })
-    }
-
-render() {
-  const { isLoading } = this.state;
-
-  if (isLoading) {
-    return <p>Loading...</p>;
+    .then((res) => console.log("Response from Post: ", res.json()))
+    .then(console.log("Post complete"))
   }
 
-  return (
-    <div>
-      <h1>This is the Container</h1>
-      <Component1
-        testItemData={this.state.testItems}
-      />
-      <Form
-        handleSubmit={this.handleSubmit}
-      />
-    </div>
-  )
-}
+  handleSubmit(formData) {
+    this.postItems(formData)
+    this.fetchItems()
+    }
+
+  render() {
+    const { isLoading } = this.state;
+
+    if (isLoading) {
+      return <p>Loading...</p>;
+    }
+
+    return (
+      <div>
+        <h1>This is the Container</h1>
+        <Component1
+          testItemData={this.state.testItems}
+        />
+        <Form
+          handleSubmit={this.handleSubmit}
+        />
+      </div>
+    )
+  }
 };
 
 export default Container;
