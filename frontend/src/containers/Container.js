@@ -38,13 +38,17 @@ class Container extends Component {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
+      body: JSON.stringify(
+        {
         name: formData.name,
         description: formData.description
-      })
+        }
+      )
     })
-    .then((res) => console.log("Response from Post: ", res.json()))
-    .then(console.log("Post complete"))
+    .then(res => res.json())
+    .then(data => {
+      console.log("Results from Post: ", data)
+    })
   }
 
   handleSubmit(formData) {
