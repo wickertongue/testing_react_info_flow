@@ -15,46 +15,45 @@ class Container extends Component {
   };
 
   async componentDidMount() {
-    this.fetchItems("http://localhost:8080/testItems/")
+    this.fetchItems()
   };
 
-  async fetchItems() {
-    fetch("http://localhost:8080/testItems/")
-      .then(res => res.json())
-      .then(data => {
-        this.setState(
+  async postItems(formData) {
+    const response = await fetch("http://localhost:8080/testItems/",
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(
           {
-            testItems: data._embedded.testItems,
-            isLoading: false
+            name: formData.name,
+            description: formData.description
           }
         )
-        console.log("Results from Fetch: ", data._embedded.testItems)
       })
+    const data = await response.json();
+    console.log("Response from Post: ", data)
+    console.log("Fetch Complete")
   }
 
-  async postItems(formData) {
-    fetch("http://localhost:8080/testItems", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(
-        {
-        name: formData.name,
-        description: formData.description
-        }
-      )
-    })
-    .then(res => res.json())
-    .then(data => {
-      console.log("Results from Post: ", data)
-    })
+  async fetchItems() {
+    const response = await fetch("http://localhost:8080/testItems/")
+    const data = await response.json();
+    this.setState(
+      {
+        testItems: data._embedded.testItems,
+      }
+    );
+    this.setState({ isLoading: false })
+    console.log("Response from Fetch: ", data._embedded.testItems)
+    console.log("Fetch Complete")
   }
 
   handleSubmit(formData) {
     this.postItems(formData)
     this.fetchItems()
-    }
+  }
 
   render() {
     const { isLoading } = this.state;
