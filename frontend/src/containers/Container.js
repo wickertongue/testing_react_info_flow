@@ -52,11 +52,25 @@ class Container extends Component {
     console.log("Fetch Complete")
   }
 
+  // handleSubmit(formData) {
+  //   console.log("Submit Initiated")
+  //   Promise.all(this.postItems(formData), fetch())
+  //   console.log("Submit Complete")
+  // }
+
   handleSubmit(formData) {
-    console.log("Submit Initiated")
-    this.postItems(formData)
-    this.fetchItems()
-    console.log("Submit Complete")
+    var that = this;
+
+    return Promise.resolve()
+        .then(function() {
+            return that.postItems(formData);
+        })
+        .then(function() {
+            return that.fetchItems();
+        })
+        .then(function() {
+            console.log(" ---- done ----");
+        });
   }
 
   render() {
