@@ -19,6 +19,7 @@ class Container extends Component {
   };
 
   async postItems(formData) {
+    console.log("Post Initiated")
     const response = await fetch("http://localhost:8080/testItems/",
       {
         method: 'POST',
@@ -34,10 +35,11 @@ class Container extends Component {
       })
     const data = await response.json();
     console.log("Response from Post: ", data)
-    console.log("Fetch Complete")
+    console.log("Post Complete")
   }
 
   async fetchItems() {
+    console.log("Fetch Initiated")
     const response = await fetch("http://localhost:8080/testItems/")
     const data = await response.json();
     this.setState(
@@ -51,8 +53,10 @@ class Container extends Component {
   }
 
   handleSubmit(formData) {
+    console.log("Submit Initiated")
     this.postItems(formData)
     this.fetchItems()
+    console.log("Submit Complete")
   }
 
   render() {
