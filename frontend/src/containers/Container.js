@@ -18,9 +18,27 @@ class Container extends Component {
     this.fetchItems()
   };
 
-  async postItems(formData) {
-    console.log("Post Initiated")
-    const response = await fetch("http://localhost:8080/testItems/",
+  fetchItems() {
+    console.log("Fetch Initiated")
+
+    fetch("http://localhost:8080/testItems/")
+      .then(response => response.json())
+      .then(data => {
+        this.setState(
+          {
+            testItems: data._embedded.testItems,
+            isLoading: false
+          }
+        )
+        console.log("Response from Fetch: ", data._embedded.testItems)
+        console.log("Fetch Complete")
+      })
+  }
+
+  postItems(formData) {
+    console.log('Post Initiated')
+
+    fetch('http://localhost:8080/testItems/',
       {
         method: 'POST',
         headers: {
@@ -30,48 +48,37 @@ class Container extends Component {
           {
             name: formData.name,
             description: formData.description
-          }
-        )
+          })
+      }
+    )
+      .then(response => response.json())
+      .then(data => {
+        console.log('Response from Post: ', data)
+        console.log('Post Complete')
       })
-    const data = await response.json();
-    console.log("Response from Post: ", data)
-    console.log("Post Complete")
   }
 
-  async fetchItems() {
-    console.log("Fetch Initiated")
-    const response = await fetch("http://localhost:8080/testItems/")
-    const data = await response.json();
-    this.setState(
-      {
-        testItems: data._embedded.testItems,
-      }
-    );
-    this.setState({ isLoading: false })
-    console.log("Response from Fetch: ", data._embedded.testItems)
-    console.log("Fetch Complete")
+  handleSubmit(formData) {
+    console.log("Submit Initiated")
+    this.postItems();
+    this.fetchItems();
+    console.log("Submit Complete")
   }
 
   // handleSubmit(formData) {
-  //   console.log("Submit Initiated")
-  //   Promise.all(this.postItems(formData), fetch())
-  //   console.log("Submit Complete")
+  //   var that = this;
+
+  //   return Promise.resolve()
+  //     .then(function () {
+  //       return that.postItems(formData);
+  //     })
+  //     .then(function () {
+  //       return that.fetchItems();
+  //     })
+  //     .then(function () {
+  //       console.log(" ---- done ----");
+  //     });
   // }
-
-  handleSubmit(formData) {
-    var that = this;
-
-    return Promise.resolve()
-        .then(function() {
-            return that.postItems(formData);
-        })
-        .then(function() {
-            return that.fetchItems();
-        })
-        .then(function() {
-            console.log(" ---- done ----");
-        });
-  }
 
   render() {
     const { isLoading } = this.state;
