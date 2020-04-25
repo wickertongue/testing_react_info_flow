@@ -20,7 +20,6 @@ class Container extends Component {
 
   fetchItems() {
     console.log("Fetch Initiated")
-
     fetch("http://localhost:8080/testItems/")
       .then(response => response.json())
       .then(data => {
@@ -33,6 +32,20 @@ class Container extends Component {
         console.log("Response from Fetch: ", data._embedded.testItems)
         console.log("Fetch Complete")
       })
+  }
+
+  async fetchItemsAsync() {
+    console.log("Fetch Initiated")
+    const response = await fetch("http://localhost:8080/testItems/")
+    const data = await response.json();
+    this.setState(
+      {
+        testItems: data._embedded.testItems,
+        isLoading: false
+      }
+    );
+    console.log("Response from Fetch: ", data._embedded.testItems)
+    console.log("Fetch Complete")
   }
 
   postItems(formData) {
@@ -58,26 +71,47 @@ class Container extends Component {
       })
   }
 
-  handleSubmit(formData) {
-    console.log("Submit Initiated")
-    this.postItems();
-    this.fetchItems();
-    console.log("Submit Complete")
+  async postItemsAsync(formData) {
+    console.log("Post Initiated")
+    const response = await fetch("http://localhost:8080/testItems/",
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(
+          {
+            name: formData.name,
+            description: formData.description
+          }
+        )
+      })
+    const data = await response.json();
+    console.log("Response from Post: ", data)
+    console.log("Post Complete")
   }
 
-  // handleSubmit(formData) {
-  //   var that = this;
+  handleSubmit(formData) {
+    console.log('HandleSubmitAsync Initiated')
+    var that = this;
 
-  //   return Promise.resolve()
-  //     .then(function () {
-  //       return that.postItems(formData);
-  //     })
-  //     .then(function () {
-  //       return that.fetchItems();
-  //     })
-  //     .then(function () {
-  //       console.log(" ---- done ----");
-  //     });
+    return Promise.resolve()
+      .then(function () {
+        return that.postItemsAsync(formData);
+      })
+      .then(function () {
+        return that.fetchItemsAsync();
+      })
+      .then(function () {
+        console.log("HandleSubmitAsync Complete");
+      });
+  }
+
+  // async handleSubmit(formData) {
+  //   console.log('HandleSubmit Initiated')
+  //   var postComplete = await this.postItems(formData)
+  //   console.log(postComplete)
+  //   console.log('HandleSubmit Complete')
   // }
 
   render() {
