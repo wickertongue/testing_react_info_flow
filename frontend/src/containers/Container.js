@@ -20,7 +20,7 @@ class Container extends Component {
 
   fetchItems() {
     console.log("Fetch Initiated")
-    fetch("http://localhost:8080/testItems/")
+    return fetch("http://localhost:8080/testItems/")
       .then(response => response.json())
       .then(data => {
         this.setState(
@@ -51,7 +51,7 @@ class Container extends Component {
   postItems(formData) {
     console.log('Post Initiated')
 
-    fetch('http://localhost:8080/testItems/',
+    return fetch('http://localhost:8080/testItems/',
       {
         method: 'POST',
         headers: {
@@ -92,18 +92,18 @@ class Container extends Component {
   }
 
   handleSubmit(formData) {
-    console.log('HandleSubmitAsync Initiated')
+    console.log('HandleSubmit Initiated')
     var that = this;
 
     return Promise.resolve()
       .then(function () {
-        return that.postItemsAsync(formData);
+        return that.postItems(formData);
       })
       .then(function () {
-        return that.fetchItemsAsync();
+        return that.fetchItems();
       })
       .then(function () {
-        console.log("HandleSubmitAsync Complete");
+        console.log("HandleSubmit Complete");
       });
   }
 
